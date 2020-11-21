@@ -1,7 +1,7 @@
 import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
 import { isChromeExtension } from "@utils/utils";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TextInput, Pressable } from "react-native";
 import { Button, Tooltip, Text } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
@@ -30,7 +30,7 @@ class App extends React.PureComponent {
 
     console.log(isChromeExtension());
   }
-  handleFormatJsonClick = (e) => {
+  handleFormatJsonClick = () => {
     const rawJson = this.textAreaRef.current.value;
 
     try {
@@ -42,7 +42,7 @@ class App extends React.PureComponent {
       !!this.textAreaRef.current.value &&
         this.setState({
           isValidJson: JSON_VALIDITY.INVALID,
-          errorMessage: "The text is not a valid json object",
+          errorMessage: "This is not a valid JSON text",
         });
     }
   };
@@ -55,7 +55,8 @@ class App extends React.PureComponent {
       container: {
         display: "flex",
         flexDirection: "column",
-        paddingVertical: "4px",
+        paddingTop: "4px",
+        paddingBottom: "12px",
         paddingHorizontal: "12px",
         minHeight: isChromeExtension() ? EXTENSION_WINDOW_HEIGHT : "100vh",
         minWidth: isChromeExtension() ? EXTENSION_WINDOW_WIDTH : "100vw",
@@ -76,22 +77,30 @@ class App extends React.PureComponent {
             justifyContent: "flex-end",
           }}
         >
-          <Tooltip
-            ref={this.toolTopRef}
-            withOverlay={false}
-            onOpen={() => {
-              setTimeout(this.toolTopRef.current.toggleTooltip, 200);
+          <Pressable
+            onPress={() => {
+              console.log("pressed");
             }}
-            backgroundColor='#060606'
-            ModalComponent={Modal}
-            popover={
-              <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
-            }
           >
-            <View style={{ padding: 8 }} onPress={this.handleCopyClick}>
-              <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
-            </View>
-          </Tooltip>
+            <Tooltip
+              ref={this.toolTopRef}
+              withOverlay={false}
+              onOpen={() => {
+                setTimeout(this.toolTopRef.current.toggleTooltip, 200);
+              }}
+              backgroundColor='#060606'
+              // ModalComponent={Modal}
+              popover={
+                <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
+              }
+            >
+              <Pressable onPress={this.handleCopyClick}>
+                <View style={{ padding: 8 }}>
+                  <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
+                </View>
+              </Pressable>
+            </Tooltip>
+          </Pressable>
           <Button onPress={this.handleFormatJsonClick} title='Format' />
         </div>
         <div style={{ color: "red", height: 16 }}>{errorMessage}</div>
@@ -102,7 +111,9 @@ class App extends React.PureComponent {
             display: "flex",
           }}
         >
-          <textarea
+          <TextInput
+            editable
+            multiline
             ref={this.textAreaRef}
             placeholder='Paste json here...'
             style={{
@@ -115,7 +126,7 @@ class App extends React.PureComponent {
                   ? "2px solid red"
                   : "1px solid black",
             }}
-          ></textarea>
+          ></TextInput>
         </div>
       </View>
     );
