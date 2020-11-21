@@ -67,6 +67,8 @@ class App extends React.PureComponent {
         paddingTop: "4px",
         paddingBottom: "12px",
         paddingHorizontal: "12px",
+        height: "100vh",
+        maxHeight: "100vh",
         minHeight: isChromeExtension() ? EXTENSION_WINDOW_HEIGHT : "100vh",
         minWidth: isChromeExtension() ? EXTENSION_WINDOW_WIDTH : "100vw",
       },
@@ -90,28 +92,16 @@ class App extends React.PureComponent {
             flexDirection: "row",
           }}
         >
-          <Tooltip
-            ref={this.toolTopRef}
-            withOverlay={false}
-            onOpen={() => {
-              setTimeout(this.toolTopRef.current.toggleTooltip, 200);
-            }}
-            backgroundColor='#060606'
-            // ModalComponent={Modal}
-            popover={
-              <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
-            }
-          >
-            <TouchableOpacity onPress={this.handleCopyClick}>
-              <View style={{ padding: 8 }}>
-                <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
-              </View>
-            </TouchableOpacity>
-          </Tooltip>
+          <TouchableOpacity onPress={this.handleCopyClick}>
+            <View style={{ padding: 8 }}>
+              <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
+            </View>
+          </TouchableOpacity>
+
           <Button onPress={this.handleFormatJsonClick} title='Format' />
         </View>
         <View style={{ color: "red", height: 16 }}>{errorMessage}</View>
-        <Text>{`\n`}</Text>
+        {/** The main editor section */}
         <View
           style={{
             justifyContent: "center",
