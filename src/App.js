@@ -84,7 +84,6 @@ class App extends React.PureComponent {
             }}
             backgroundColor='#060606'
             ModalComponent={Modal}
-            onPress={console.log}
             popover={
               <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
             }
