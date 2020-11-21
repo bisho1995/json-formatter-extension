@@ -37,10 +37,11 @@ class App extends React.PureComponent {
 
       this.setState({ isValidJson: JSON_VALIDITY.VALID });
     } catch (error) {
-      this.setState({
-        isValidJson: JSON_VALIDITY.INVALID,
-        errorMessage: "The text is not a valid json object",
-      });
+      !!this.textAreaRef.current.value &&
+        this.setState({
+          isValidJson: JSON_VALIDITY.INVALID,
+          errorMessage: "The text is not a valid json object",
+        });
     }
   };
   handleCopyClick = () => {
@@ -77,7 +78,7 @@ class App extends React.PureComponent {
             ref={this.toolTopRef}
             withOverlay={false}
             onOpen={() => {
-              setTimeout(this.toolTopRef.current.toggleTooltip, 200)
+              setTimeout(this.toolTopRef.current.toggleTooltip, 200);
             }}
             backgroundColor='#060606'
             ModalComponent={Modal}
