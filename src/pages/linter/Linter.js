@@ -1,18 +1,11 @@
 import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
-import { isChromeExtension, saveJSONFileToDisk } from "@utils/utils";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
-import { Button, Tooltip, Text } from "react-native-elements";
+import { isChromeExtension } from "@utils/utils";
+import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Button } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
-import Modal from "modal-react-native-web";
+import JsonService from "@services/JsonService";
 
 import {
   EXTENSION_WINDOW_HEIGHT,
@@ -27,36 +20,41 @@ const JSON_VALIDITY = {
 
 class App extends React.PureComponent {
   textAreaRef = null;
+  jsonService = null;
 
   state = {
     isValidJson: JSON_VALIDITY.UNINITIALIZED,
     errorMessage: "",
+    text: "",
   };
 
   constructor(props) {
     super(props);
-    this.textAreaRef = createRef();
     this.toolTopRef = createRef();
+
+    this.jsonService = new JsonService();
   }
-  handleFormatJsonClick = () => {
-    const rawJson = this.textAreaRef.current.value;
+  handleFormatJsonClick = async () => {
+    const rawJson = this.state.text;
 
-    try {
-      const formattedJSON = JSON.stringify(JSON.parse(rawJson), null, 2);
-      this.textAreaRef.current.value = formattedJSON;
-
-      this.setState({ isValidJson: JSON_VALIDITY.VALID });
-    } catch (error) {
-      !!this.textAreaRef.current.value &&
+    this.jsonService
+      .formatJsonAsync(rawJson)
+      .then((formattedJSON) => {
         this.setState({
-          isValidJson: JSON_VALIDITY.INVALID,
-          errorMessage: "This is not a valid JSON text",
+          isValidJson: JSON_VALIDITY.VALID,
+          text: formattedJSON,
         });
-    }
+      })
+      .catch((msg) => {
+        this.isTextPresent() &&
+          this.setState({
+            isValidJson: JSON_VALIDITY.INVALID,
+            errorMessage: msg,
+          });
+      });
   };
   handleCopyClick = () => {
-    console.log("handleCopyClick");
-    this.textAreaRef.current && copy(this.textAreaRef.current.value);
+    this.isTextPresent() && copy(this.state.text);
   };
 
   getStyles = () => {
@@ -75,12 +73,16 @@ class App extends React.PureComponent {
     });
   };
   onSaveFilePressed = () => {
-    console.log("save file");
-    saveJSONFileToDisk(this.textAreaRef.current.value);
+    this.jsonService.saveToDiskAsync(this.state.text);
   };
+  isTextPresent = () => !!this.state.text;
   render() {
     const { isValidJson, errorMessage } = this.state;
-
+    console.log(
+      "this.textAreaRef.current?.value",
+      this.state.text,
+      this.isTextPresent()
+    );
     const styles = this.getStyles();
 
     return (
@@ -98,7 +100,11 @@ class App extends React.PureComponent {
             </View>
           </TouchableOpacity>
 
-          <Button onPress={this.handleFormatJsonClick} title='Format' />
+          <Button
+            onPress={this.handleFormatJsonClick}
+            title='Format'
+            disabled={!this.isTextPresent()}
+          />
         </View>
         <View style={{ color: "red", height: 16 }}>{errorMessage}</View>
         {/** The main editor section */}
@@ -112,8 +118,11 @@ class App extends React.PureComponent {
           <TextInput
             editable
             multiline
-            ref={this.textAreaRef}
             placeholder='Paste json here...'
+            onChange={(e) => {
+              console.log(e.target.value);
+              this.setState({ text: e.target.value });
+            }}
             style={{
               width: "100%",
               height: "85vh",
@@ -138,6 +147,7 @@ class App extends React.PureComponent {
             }
             title='Save'
             onPress={this.onSaveFilePressed}
+            disabled={!this.isTextPresent()}
           ></Button>
         </View>
       </View>

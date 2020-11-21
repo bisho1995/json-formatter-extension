@@ -327,6 +327,7 @@ module.exports = function (webpackEnv) {
         "@pages": `${paths.appSrc}/pages`,
         "@reducer": `${paths.appSrc}/reducer`,
         "@actions": `${paths.appSrc}/actions`,
+        "@services": `${paths.appSrc}/services`,
         "@": paths.appSrc,
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/

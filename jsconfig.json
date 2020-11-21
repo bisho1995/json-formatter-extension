@@ -8,6 +8,7 @@
       "@pages/*": ["pages/*"],
       "@reducer/*": ["reducer/*"],
       "@actions/*": ["actions/*"],
+      "@services/*": ["services/*"],
       "@/*": ["*"]
     }
   },
