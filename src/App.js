@@ -1,3 +1,3 @@
-import LinterPage from "./pages/linter/Linter";
+import LinterPage from "@pages/linter/Linter";
 
 export default LinterPage;

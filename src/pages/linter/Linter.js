@@ -19,16 +19,16 @@ const JSON_VALIDITY = {
 
 class App extends React.PureComponent {
   textAreaRef = null;
+
   state = {
     isValidJson: JSON_VALIDITY.UNINITIALIZED,
     errorMessage: "",
   };
+
   constructor(props) {
     super(props);
     this.textAreaRef = createRef();
     this.toolTopRef = createRef();
-
-    console.log(isChromeExtension());
   }
   handleFormatJsonClick = () => {
     const rawJson = this.textAreaRef.current.value;
@@ -70,41 +70,35 @@ class App extends React.PureComponent {
 
     return (
       <View style={styles.container}>
-        <div
+        <View
           style={{
-            flex: 1,
             display: "flex",
             justifyContent: "flex-end",
+            flexDirection: "row",
           }}
         >
-          <Pressable
-            onPress={() => {
-              console.log("pressed");
+          <Tooltip
+            ref={this.toolTopRef}
+            withOverlay={false}
+            onOpen={() => {
+              setTimeout(this.toolTopRef.current.toggleTooltip, 200);
             }}
+            backgroundColor='#060606'
+            // ModalComponent={Modal}
+            popover={
+              <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
+            }
           >
-            <Tooltip
-              ref={this.toolTopRef}
-              withOverlay={false}
-              onOpen={() => {
-                setTimeout(this.toolTopRef.current.toggleTooltip, 200);
-              }}
-              backgroundColor='#060606'
-              // ModalComponent={Modal}
-              popover={
-                <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
-              }
-            >
-              <Pressable onPress={this.handleCopyClick}>
-                <View style={{ padding: 8 }}>
-                  <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
-                </View>
-              </Pressable>
-            </Tooltip>
-          </Pressable>
+            <Pressable onPress={this.handleCopyClick}>
+              <View style={{ padding: 8 }}>
+                <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
+              </View>
+            </Pressable>
+          </Tooltip>
           <Button onPress={this.handleFormatJsonClick} title='Format' />
-        </div>
-        <div style={{ color: "red", height: 16 }}>{errorMessage}</div>
-        <br />
+        </View>
+        <View style={{ color: "red", height: 16 }}>{errorMessage}</View>
+        <Text>{`\n`}</Text>
         <div
           style={{
             justifyContent: "center",
