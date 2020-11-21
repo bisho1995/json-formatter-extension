@@ -6,8 +6,10 @@ import { Button, Tooltip, Text } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import Modal from "modal-react-native-web";
-
-// const debug = require("debug")("App.js");
+import {
+  EXTENSION_WINDOW_HEIGHT,
+  EXTENSION_WINDOW_WIDTH,
+} from "@/APP_CONSTANTS";
 
 const JSON_VALIDITY = {
   UNINITIALIZED: 0,
@@ -55,8 +57,8 @@ class App extends React.PureComponent {
         flexDirection: "column",
         paddingVertical: "4px",
         paddingHorizontal: "12px",
-        minHeight: isChromeExtension() ? 600 : "100vh",
-        minWidth: isChromeExtension() ? 500 : "100vw",
+        minHeight: isChromeExtension() ? EXTENSION_WINDOW_HEIGHT : "100vh",
+        minWidth: isChromeExtension() ? EXTENSION_WINDOW_WIDTH : "100vw",
       },
     });
   };

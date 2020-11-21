@@ -323,11 +323,12 @@ module.exports = function (webpackEnv) {
         .map((ext) => `.${ext}`)
         .filter((ext) => useTypeScript || !ext.includes("ts")),
       alias: {
-        "@utils": path.resolve(__dirname, "..", "src/utils"),
+        "@utils": `${paths.appSrc}/utils`,
+        "@": paths.appSrc,
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         "react-native": "react-native-web",
-        'react-native-vector-icons': '@ovaeasy/react-native-vector-icons',
+        "react-native-vector-icons": "@ovaeasy/react-native-vector-icons",
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
           "react-dom$": "react-dom/profiling",
