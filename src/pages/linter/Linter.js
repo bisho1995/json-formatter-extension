@@ -1,11 +1,19 @@
 import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
-import { isChromeExtension } from "@utils/utils";
-import { View, StyleSheet, TextInput, Pressable } from "react-native";
+import { isChromeExtension, saveJSONFileToDisk } from "@utils/utils";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import { Button, Tooltip, Text } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import Modal from "modal-react-native-web";
+
 import {
   EXTENSION_WINDOW_HEIGHT,
   EXTENSION_WINDOW_WIDTH,
@@ -63,6 +71,10 @@ class App extends React.PureComponent {
       },
     });
   };
+  onSaveFilePressed = () => {
+    console.log("save file");
+    saveJSONFileToDisk(this.textAreaRef.current.value);
+  };
   render() {
     const { isValidJson, errorMessage } = this.state;
 
@@ -90,19 +102,22 @@ class App extends React.PureComponent {
             }
           >
             <Pressable onPress={this.handleCopyClick}>
-              <View style={{ padding: 8 }}>
-                <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
-              </View>
+              <TouchableOpacity>
+                <View style={{ padding: 8 }}>
+                  <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
+                </View>
+              </TouchableOpacity>
             </Pressable>
           </Tooltip>
           <Button onPress={this.handleFormatJsonClick} title='Format' />
         </View>
         <View style={{ color: "red", height: 16 }}>{errorMessage}</View>
         <Text>{`\n`}</Text>
-        <div
+        <View
           style={{
             justifyContent: "center",
             display: "flex",
+            marginBottom: 10,
           }}
         >
           <TextInput
@@ -121,7 +136,21 @@ class App extends React.PureComponent {
                   : "1px solid black",
             }}
           ></TextInput>
-        </div>
+        </View>
+        <View style={{ display: "flex", flexDirection: "row-reverse" }}>
+          <Button
+            icon={
+              <FontAwesomeIcon
+                style={{ marginRight: 8 }}
+                icon={faDownload}
+                size='lg'
+                color='#fbfbfb'
+              />
+            }
+            title='Save'
+            onPress={this.onSaveFilePressed}
+          ></Button>
+        </View>
       </View>
     );
   }
