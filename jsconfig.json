@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     "paths": {
       "@utils/*": ["utils/*"]

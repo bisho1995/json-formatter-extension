@@ -2,7 +2,10 @@ import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
 import { isChromeExtension } from "@utils/utils";
 import { View, StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Tooltip, Text } from "react-native-elements";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import Modal from "modal-react-native-web";
 
 // const debug = require("debug")("App.js");
 
@@ -21,6 +24,7 @@ class App extends React.PureComponent {
   constructor(props) {
     super(props);
     this.textAreaRef = createRef();
+    this.toolTopRef = createRef();
 
     console.log(isChromeExtension());
   }
@@ -48,7 +52,8 @@ class App extends React.PureComponent {
       container: {
         display: "flex",
         flexDirection: "column",
-        padding: "4px 12px",
+        paddingVertical: "4px",
+        paddingHorizontal: "12px",
         minHeight: isChromeExtension() ? 600 : "100vh",
         minWidth: isChromeExtension() ? 500 : "100vw",
       },
@@ -68,7 +73,23 @@ class App extends React.PureComponent {
             justifyContent: "flex-end",
           }}
         >
-          <button onClick={this.handleCopyClick}>Copy</button>
+          <Tooltip
+            ref={this.toolTopRef}
+            withOverlay={false}
+            onOpen={() => {
+              setTimeout(this.toolTopRef.current.toggleTooltip, 200)
+            }}
+            backgroundColor='#060606'
+            ModalComponent={Modal}
+            onPress={console.log}
+            popover={
+              <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
+            }
+          >
+            <View style={{ padding: 8 }} onPress={this.handleCopyClick}>
+              <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
+            </View>
+          </Tooltip>
           <Button onPress={this.handleFormatJsonClick} title='Format' />
         </div>
         <div style={{ color: "red", height: 16 }}>{errorMessage}</div>

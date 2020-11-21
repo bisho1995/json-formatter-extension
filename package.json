@@ -6,6 +6,9 @@
     "@babel/core": "7.12.3",
     "@babel/plugin-syntax-class-properties": "^7.12.1",
     "@babel/preset-react": "^7.12.7",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.12",
     "@ovaeasy/react-native-vector-icons": "^7.0.4",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
     "@svgr/webpack": "5.4.0",
@@ -48,6 +51,7 @@
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
     "mini-css-extract-plugin": "0.11.3",
+    "modal-react-native-web": "^0.2.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
     "postcss-flexbugs-fixes": "4.2.1",
@@ -55,7 +59,7 @@
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "5.0.2",
-    "react": "^17.0.1",
+    "react": "16.13.1",
     "react-app-polyfill": "^2.0.0",
     "react-dev-utils": "^11.0.0",
     "react-dom": "^17.0.1",
@@ -158,5 +162,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@types/react-native-elements": "^0.18.0"
   }
 }
