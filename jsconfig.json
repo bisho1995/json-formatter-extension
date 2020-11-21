@@ -6,6 +6,8 @@
     "paths": {
       "@utils/*": ["utils/*"],
       "@pages/*": ["pages/*"],
+      "@reducer/*": ["reducer/*"],
+      "@actions/*": ["actions/*"],
       "@/*": ["*"]
     }
   },
