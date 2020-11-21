@@ -55,6 +55,7 @@ class App extends React.PureComponent {
     }
   };
   handleCopyClick = () => {
+    console.log("handleCopyClick");
     this.textAreaRef.current && copy(this.textAreaRef.current.value);
   };
 
@@ -101,13 +102,11 @@ class App extends React.PureComponent {
               <Text style={{ color: "#fff" }}>Copied to clipboard!</Text>
             }
           >
-            <Pressable onPress={this.handleCopyClick}>
-              <TouchableOpacity>
-                <View style={{ padding: 8 }}>
-                  <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
-                </View>
-              </TouchableOpacity>
-            </Pressable>
+            <TouchableOpacity onPress={this.handleCopyClick}>
+              <View style={{ padding: 8 }}>
+                <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
+              </View>
+            </TouchableOpacity>
           </Tooltip>
           <Button onPress={this.handleFormatJsonClick} title='Format' />
         </View>
