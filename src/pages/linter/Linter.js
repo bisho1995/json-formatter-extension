@@ -6,6 +6,8 @@ import { Button } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import JsonService from "@services/JsonService";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import {
   EXTENSION_WINDOW_HEIGHT,
@@ -26,6 +28,7 @@ class App extends React.PureComponent {
     isValidJson: JSON_VALIDITY.UNINITIALIZED,
     errorMessage: "",
     text: "",
+    showPrettyOutput: false,
   };
 
   constructor(props) {
@@ -40,6 +43,7 @@ class App extends React.PureComponent {
     this.jsonService
       .formatJsonAsync(rawJson)
       .then((formattedJSON) => {
+        console.log(formattedJSON);
         this.setState({
           isValidJson: JSON_VALIDITY.VALID,
           text: formattedJSON,
@@ -77,12 +81,8 @@ class App extends React.PureComponent {
   };
   isTextPresent = () => !!this.state.text;
   render() {
-    const { isValidJson, errorMessage } = this.state;
-    console.log(
-      "this.textAreaRef.current?.value",
-      this.state.text,
-      this.isTextPresent()
-    );
+    const { isValidJson, errorMessage, showPrettyOutput, text } = this.state;
+
     const styles = this.getStyles();
 
     return (
@@ -107,6 +107,17 @@ class App extends React.PureComponent {
           />
         </View>
         <View style={{ color: "red", height: 16 }}>{errorMessage}</View>
+        <View>
+          <Button
+            disabled={!this.isTextPresent()}
+            title='pretty'
+            onPress={() => {
+              this.setState(({ showPrettyOutput }) => ({
+                showPrettyOutput: !showPrettyOutput,
+              }));
+            }}
+          />
+        </View>
         {/** The main editor section */}
         <View
           style={{
@@ -115,26 +126,37 @@ class App extends React.PureComponent {
             marginBottom: 10,
           }}
         >
-          <TextInput
-            editable
-            multiline
-            placeholder='Paste json here...'
-            onChange={(e) => {
-              console.log(e.target.value);
-              this.setState({ text: e.target.value });
-            }}
-            style={{
-              width: "100%",
-              height: "85vh",
-              justifyContent: "center",
-              borderRadius: 4,
-              border:
-                isValidJson === JSON_VALIDITY.INVALID
-                  ? "2px solid red"
-                  : "1px solid black",
-            }}
-          ></TextInput>
+          {showPrettyOutput ? (
+            <SyntaxHighlighter
+              showLineNumbers
+              language='javascript'
+              style={dark}
+            >
+              {text}
+            </SyntaxHighlighter>
+          ) : (
+            <TextInput
+              editable
+              multiline
+              placeholder='Paste json here...'
+              value={text}
+              onChange={(e) => {
+                this.setState({ text: e.target.value });
+              }}
+              style={{
+                width: "100%",
+                height: "85vh",
+                justifyContent: "center",
+                borderRadius: 4,
+                border:
+                  isValidJson === JSON_VALIDITY.INVALID
+                    ? "2px solid red"
+                    : "1px solid black",
+              }}
+            ></TextInput>
+          )}
         </View>
+
         <View style={{ display: "flex", flexDirection: "row-reverse" }}>
           <Button
             icon={
