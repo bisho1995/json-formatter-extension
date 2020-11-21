@@ -2,7 +2,7 @@ import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
 import { isChromeExtension } from "@utils/utils";
 import { View, StyleSheet } from "react-native";
-// import { Button } from 'react-native-elements';
+import { Button } from "react-native-elements";
 
 // const debug = require("debug")("App.js");
 
@@ -69,12 +69,7 @@ class App extends React.PureComponent {
           }}
         >
           <button onClick={this.handleCopyClick}>Copy</button>
-          <button
-            style={{ padding: 14, fontSize: 16 }}
-            onClick={this.handleFormatJsonClick}
-          >
-            Format
-          </button>
+          <Button onPress={this.handleFormatJsonClick} title='Format' />
         </div>
         <div style={{ color: "red", height: 16 }}>{errorMessage}</div>
         <br />
