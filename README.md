@@ -14,6 +14,7 @@ Chrome extension for formatting JSON and detecting if the JSON supplied is corre
 ## Screenshots
 
 How it looks on an extension
+
 <img width="510" alt="Screenshot 2020-11-22 at 12 06 37 PM" src="https://user-images.githubusercontent.com/12195877/99896981-8235c300-2cbb-11eb-81ed-deb5a7d1f822.png">
 
 How it looks on mobile device
