@@ -1,10 +1,14 @@
 import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
 import { isChromeExtension } from "@utils/utils";
-import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCopy,
+  faDownload,
+  faRecycle,
+} from "@fortawesome/free-solid-svg-icons";
 import JsonService from "@services/JsonService";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -79,6 +83,9 @@ class App extends React.PureComponent {
   onSaveFilePressed = () => {
     this.jsonService.saveToDiskAsync(this.state.text);
   };
+  onClearPressed = () => {
+    this.setState({ text: "", showPrettyOutput: false });
+  };
   isTextPresent = () => !!this.state.text;
   render() {
     const { isValidJson, errorMessage, showPrettyOutput, text } = this.state;
@@ -94,11 +101,32 @@ class App extends React.PureComponent {
             flexDirection: "row",
           }}
         >
-          <TouchableOpacity onPress={this.handleCopyClick}>
-            <View style={{ padding: 8 }}>
-              <FontAwesomeIcon icon={faCopy} size='lg' color='#2b2b2b' />
-            </View>
-          </TouchableOpacity>
+          <Button
+            icon={
+              <FontAwesomeIcon
+                icon={faCopy}
+                size='lg'
+                color='#fff'
+                style={{ marginRight: "8px" }}
+              />
+            }
+            buttonStyle={{ marginRight: "8px" }}
+            disabled={!this.isTextPresent()}
+            title='Copy'
+            onPress={this.handleCopyClick}
+          />
+
+          <Button
+            icon={<Text>🙍‍♀️ </Text>}
+            buttonStyle={{ marginRight: "8px" }}
+            disabled={!this.isTextPresent()}
+            title='Pretty'
+            onPress={() => {
+              this.setState(({ showPrettyOutput }) => ({
+                showPrettyOutput: !showPrettyOutput,
+              }));
+            }}
+          />
 
           <Button
             onPress={this.handleFormatJsonClick}
@@ -107,27 +135,18 @@ class App extends React.PureComponent {
           />
         </View>
         <View style={{ color: "red", height: 16 }}>{errorMessage}</View>
-        <View>
-          <Button
-            disabled={!this.isTextPresent()}
-            title='pretty'
-            onPress={() => {
-              this.setState(({ showPrettyOutput }) => ({
-                showPrettyOutput: !showPrettyOutput,
-              }));
-            }}
-          />
-        </View>
         {/** The main editor section */}
         <View
           style={{
             justifyContent: "center",
             display: "flex",
             marginBottom: 10,
+            flex: 1,
           }}
         >
           {showPrettyOutput ? (
             <SyntaxHighlighter
+              
               showLineNumbers
               language='javascript'
               style={dark}
@@ -157,7 +176,27 @@ class App extends React.PureComponent {
           )}
         </View>
 
-        <View style={{ display: "flex", flexDirection: "row-reverse" }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            buttonStyle={{ backgroundColor: "#d32f2f" }}
+            icon={
+              <FontAwesomeIcon
+                style={{ marginRight: 8 }}
+                icon={faRecycle}
+                size='lg'
+                color='#fbfbfb'
+              />
+            }
+            title='Clear'
+            onPress={this.onClearPressed}
+            disabled={!this.isTextPresent()}
+          ></Button>
           <Button
             icon={
               <FontAwesomeIcon
