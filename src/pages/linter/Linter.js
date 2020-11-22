@@ -1,6 +1,6 @@
 import React, { createRef } from "react";
 import copy from "copy-to-clipboard";
-import { isChromeExtension } from "@utils/utils";
+import { isChromeExtension, Environment } from "@utils/utils";
 import { View, StyleSheet, TextInput, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -89,8 +89,10 @@ class App extends React.PureComponent {
   isTextPresent = () => !!this.state.text;
   render() {
     const { isValidJson, errorMessage, showPrettyOutput, text } = this.state;
-
     const styles = this.getStyles();
+    const titleStyles = { fontSize: "14px" };
+
+    console.log(titleStyles);
 
     return (
       <View style={styles.container}>
@@ -107,18 +109,20 @@ class App extends React.PureComponent {
                 icon={faCopy}
                 size='lg'
                 color='#fff'
-                style={{ marginRight: "8px" }}
+                style={{ marginRight: "8px", fontSize: "14px" }}
               />
             }
             buttonStyle={{ marginRight: "8px" }}
+            titleStyle={titleStyles}
             disabled={!this.isTextPresent()}
             title='Copy'
             onPress={this.handleCopyClick}
           />
 
           <Button
-            icon={<Text>🙍‍♀️ </Text>}
+            icon={<Text style={{fontSize: "12px"}}>🙍‍♀️ </Text>}
             buttonStyle={{ marginRight: "8px" }}
+            titleStyle={titleStyles}
             disabled={!this.isTextPresent()}
             title='Pretty'
             onPress={() => {
@@ -131,6 +135,7 @@ class App extends React.PureComponent {
           <Button
             onPress={this.handleFormatJsonClick}
             title='Format'
+            titleStyle={titleStyles}
             disabled={!this.isTextPresent()}
           />
         </View>
@@ -146,7 +151,6 @@ class App extends React.PureComponent {
         >
           {showPrettyOutput ? (
             <SyntaxHighlighter
-              
               showLineNumbers
               language='javascript'
               style={dark}
@@ -196,6 +200,7 @@ class App extends React.PureComponent {
             title='Clear'
             onPress={this.onClearPressed}
             disabled={!this.isTextPresent()}
+            titleStyle={titleStyles}
           ></Button>
           <Button
             icon={
@@ -209,6 +214,7 @@ class App extends React.PureComponent {
             title='Save'
             onPress={this.onSaveFilePressed}
             disabled={!this.isTextPresent()}
+            titleStyle={titleStyles}
           ></Button>
         </View>
       </View>
