@@ -62,6 +62,7 @@
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "5.0.2",
     "pretty-print-json": "^0.3.0",
+    "randomstring": "^1.1.5",
     "react": "16.13.1",
     "react-app-polyfill": "^2.0.0",
     "react-dev-utils": "^11.0.0",
@@ -170,6 +171,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-native-elements": "^0.18.0"
+    "@types/react-native-elements": "^0.18.0",
+    "nodemon": "^2.0.6"
   }
 }

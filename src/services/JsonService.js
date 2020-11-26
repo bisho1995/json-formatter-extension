@@ -40,4 +40,25 @@ export default class JsonService {
       return res(this);
     });
   }
+
+  async getLinkAsync(json = {}) {
+    const payload = {
+      json: typeof json === "string" ? JSON.parse(json) : json,
+    };
+    console.log(payload);
+    try {
+      let resp = await fetch("http://localhost:8080/jsons", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const { url } = await resp.json();
+
+      console.log(url);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

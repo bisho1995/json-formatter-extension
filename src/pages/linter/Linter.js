@@ -8,6 +8,7 @@ import {
   faCopy,
   faDownload,
   faRecycle,
+  faLink,
 } from "@fortawesome/free-solid-svg-icons";
 import JsonService from "@services/JsonService";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -83,6 +84,9 @@ class App extends React.PureComponent {
   onSaveFilePressed = () => {
     this.jsonService.saveToDiskAsync(this.state.text);
   };
+  onGetLinkPressed = () => {
+    this.jsonService.getLinkAsync(this.state.text);
+  };
   onClearPressed = () => {
     this.setState({ text: "", showPrettyOutput: false });
   };
@@ -120,7 +124,7 @@ class App extends React.PureComponent {
           />
 
           <Button
-            icon={<Text style={{fontSize: "12px"}}>🙍‍♀️ </Text>}
+            icon={<Text style={{ fontSize: "12px" }}>🙍‍♀️ </Text>}
             buttonStyle={{ marginRight: "8px" }}
             titleStyle={titleStyles}
             disabled={!this.isTextPresent()}
@@ -199,6 +203,20 @@ class App extends React.PureComponent {
             }
             title='Clear'
             onPress={this.onClearPressed}
+            disabled={!this.isTextPresent()}
+            titleStyle={titleStyles}
+          ></Button>
+          <Button
+            icon={
+              <FontAwesomeIcon
+                style={{ marginRight: 8 }}
+                icon={faLink}
+                size='lg'
+                color='#fbfbfb'
+              />
+            }
+            title='Get Link'
+            onPress={this.onGetLinkPressed}
             disabled={!this.isTextPresent()}
             titleStyle={titleStyles}
           ></Button>
