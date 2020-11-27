@@ -1,4 +1,6 @@
 import { saveJSONFileToDisk } from "@utils/utils";
+import store from "@reducer/rootReducer";
+import { UPDATE_PARAMS } from "@/actions/InfoModalActions";
 
 export default class JsonService {
   static INVALID_JSON_MESSAGE = "JSON is invalid";
@@ -42,6 +44,10 @@ export default class JsonService {
   }
 
   async getLinkAsync(json = {}) {
+    store.dispatch({
+      type: UPDATE_PARAMS,
+      payload: { showing: true, message: "Please wait fetching link..." },
+    });
     const payload = {
       json: typeof json === "string" ? JSON.parse(json) : json,
     };

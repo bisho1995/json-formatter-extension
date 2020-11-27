@@ -1,15 +1,15 @@
 import React from "react";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import Router from "@/Router";
-import rootReducer from "@reducer/rootReducer";
-
-const store = createStore(rootReducer);
+import store from "@reducer/rootReducer";
+import InfoModal from "@/common/components/InfoModal/InfoModal";
 
 export default function App() {
   return (
     <Provider store={store}>
-      <Router />
+      <InfoModal>
+        <Router />
+      </InfoModal>
     </Provider>
   );
 }
