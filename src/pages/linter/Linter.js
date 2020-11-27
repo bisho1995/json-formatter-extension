@@ -168,7 +168,7 @@ class App extends React.PureComponent {
               placeholder='Paste json here...'
               value={text}
               onChange={(e) => {
-                this.setState({ text: e.target.value });
+                this.setState({ text: e.target.value, errorMessage: "" });
               }}
               style={{
                 width: "100%",

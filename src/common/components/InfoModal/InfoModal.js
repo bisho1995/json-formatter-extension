@@ -1,26 +1,14 @@
 import React from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
+import { HIDE_MODAL } from "@actions/InfoModalActions";
 class InfoModal extends React.PureComponent {
   timeoutRef;
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showModal: props.showModal,
-    };
-  }
-  static getDerivedStateFromProps(props, state) {
-    const newState = {
-      showModal: props.showModal,
-    };
-    return newState;
-  }
   componentDidMount() {
     if (this.props.showModal) this.autoHideModal();
   }
 
-  componentDidUpdate(prevProp, prevState) {
+  componentDidUpdate(prevProp) {
     if (prevProp.showModal !== this.props.showModal) {
       this.autoHideModal();
     }
@@ -33,9 +21,7 @@ class InfoModal extends React.PureComponent {
   autoHideModal = () => {
     if (this.timeoutRef) clearTimeout(this.timeoutRef);
     this.timeoutRef = setTimeout(() => {
-      this.setState({ showModal: false }, (...a) => {
-        console.log(a);
-      });
+      this.props.hideModal();
     }, 2000);
   };
 
@@ -44,21 +30,23 @@ class InfoModal extends React.PureComponent {
       style={{
         position: "fixed",
         left: "50%",
-        top: "50%",
+        top: "10%",
         transform: "translate(-50%, -50%)",
         background: "#000",
         color: "#fff",
         paddingHorizontal: "20px",
         paddingVertical: "10px",
+        width: "95%",
+        maxWidth: "600px",
+        zIndex: 1024
       }}
     >
       {this.props.message}
     </View>
   );
   render() {
-    const { children } = this.props;
-    const { showModal } = this.state;
-    console.log("props", this.props, "state", this.state);
+    const { children, showModal } = this.props;
+    console.log("props", this.props);
     return (
       <View>
         {showModal ? this.renderModalUI() : null}
@@ -68,13 +56,13 @@ class InfoModal extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function mapReduxStateToComponentProps({
-  InfoModalReducer,
-}) {
-  return {
-    showModal: InfoModalReducer.showing,
-    message: InfoModalReducer.message,
-  };
-};
+const mapStateToProps = ({ InfoModalReducer }) => ({
+  showModal: InfoModalReducer.showing,
+  message: InfoModalReducer.message,
+});
 
-export default connect(mapStateToProps)(InfoModal);
+const mapDispatchToProps = (dispatch) => ({
+  hideModal: () => dispatch({ type: HIDE_MODAL }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoModal);
